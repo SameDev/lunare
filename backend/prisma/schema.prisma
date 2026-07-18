@@ -25,6 +25,7 @@ model User {
   history       PlayHistory[]
   downloadJobs  DownloadJob[]
   playlists     Playlist[]
+  webhooks      Webhook[]
 
   @@map("users")
 }
@@ -177,4 +178,18 @@ model AppSettings {
   updatedAt              DateTime @updatedAt
 
   @@map("app_settings")
+}
+
+model Webhook {
+  id        String   @id @default(uuid())
+  userId    String
+  url       String
+  events    String[]
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("webhooks")
 }

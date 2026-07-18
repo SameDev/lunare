@@ -8,6 +8,7 @@ import { MetadataService } from '../../metadata/metadata.service';
 import { LibraryService } from '../../library/library.service';
 import { WebSocketService } from '../../websocket/websocket.service';
 import { SettingsService } from '../../settings/settings.service';
+import { IntegrationsService } from '../../integrations/integrations.service';
 import { QueueRepository } from '../queue.repository';
 import { YtDlpService } from '../lib/ytdlp.service';
 import { moveFile, sanitizeFilenameSegment } from '../lib/filesystem.util';
@@ -28,6 +29,7 @@ export class DownloadProcessor extends WorkerHost {
     private readonly libraryService: LibraryService,
     private readonly websocketService: WebSocketService,
     private readonly settingsService: SettingsService,
+    private readonly integrationsService: IntegrationsService,
   ) {
     super();
   }
@@ -107,11 +109,20 @@ export class DownloadProcessor extends WorkerHost {
         id: downloadJob.id,
         trackId: track.id,
       });
+      await this.integrationsService.notify(downloadJob.userId, 'download.completed', {
+        id: downloadJob.id,
+        trackId: track.id,
+        title,
+      });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
       this.logger.error(`Download job ${downloadJob.id} failed: ${message}`);
       await this.queueRepository.markFailed(downloadJob.id, message);
       this.websocketService.emitToUser(downloadJob.userId, 'download:failed', {
+        id: downloadJob.id,
+        error: message,
+      });
+      await this.integrationsService.notify(downloadJob.userId, 'download.failed', {
         id: downloadJob.id,
         error: message,
       });

@@ -5,6 +5,7 @@ import { MetadataModule } from '../metadata/metadata.module';
 import { LibraryModule } from '../library/library.module';
 import { WebSocketModule } from '../websocket/websocket.module';
 import { SettingsModule } from '../settings/settings.module';
+import { IntegrationsModule } from '../integrations/integrations.module';
 import { QueueController } from './queue.controller';
 import { QueueService } from './queue.service';
 import { QueueRepository } from './queue.repository';
@@ -32,6 +33,7 @@ import { DOWNLOADS_QUEUE } from './queue.constants';
     LibraryModule,
     WebSocketModule,
     SettingsModule,
+    IntegrationsModule,
   ],
   controllers: [QueueController],
   providers: [QueueService, QueueRepository, YtDlpService, DownloadProcessor],
