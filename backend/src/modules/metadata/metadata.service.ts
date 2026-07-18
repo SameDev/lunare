@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { access } from 'node:fs/promises';
 import { join, resolve, sep } from 'node:path';
+import { SettingsService } from '../settings/settings.service';
 import { MetadataRepository } from './metadata.repository';
 import { WriteTagsDto } from './dto/write-tags.dto';
 import { AudioTags } from './interfaces/audio-tags.interface';
@@ -10,7 +10,7 @@ import { AudioTags } from './interfaces/audio-tags.interface';
 export class MetadataService {
   constructor(
     private readonly metadataRepository: MetadataRepository,
-    private readonly config: ConfigService,
+    private readonly settingsService: SettingsService,
   ) {}
 
   async readTags(filePath: string): Promise<AudioTags> {
@@ -30,7 +30,7 @@ export class MetadataService {
 
     const [cover] = common.picture ?? [];
     if (cover) {
-      const coversDir = join(this.config.getOrThrow<string>('LIBRARY_PATH'), '.covers');
+      const coversDir = join(await this.settingsService.getLibraryPath(), '.covers');
       tags.coverPath = await this.metadataRepository.saveCoverArt(coversDir, cover.data, cover.format);
     }
 
@@ -44,7 +44,7 @@ export class MetadataService {
   }
 
   private async assertWithinLibrary(filePath: string): Promise<string> {
-    const libraryRoot = resolve(this.config.getOrThrow<string>('LIBRARY_PATH'));
+    const libraryRoot = resolve(await this.settingsService.getLibraryPath());
     const resolvedPath = resolve(filePath);
 
     if (resolvedPath !== libraryRoot && !resolvedPath.startsWith(libraryRoot + sep)) {

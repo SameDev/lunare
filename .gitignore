@@ -27,3 +27,5 @@ docker/volumes/
 
 # Test coverage
 coverage/
+.devdata/
+data/

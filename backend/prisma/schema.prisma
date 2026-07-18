@@ -164,3 +164,17 @@ model PlaylistTrack {
   @@index([playlistId, position])
   @@map("playlist_tracks")
 }
+
+model AppSettings {
+  id                     Int      @id @default(1)
+  libraryPath            String
+  downloadTmpPath        String
+  allowedFormats         String[]
+  defaultQuality         String
+  language               String   @default("pt-BR")
+  theme                  String   @default("dark")
+  maxConcurrentDownloads Int      @default(2)
+  updatedAt              DateTime @updatedAt
+
+  @@map("app_settings")
+}

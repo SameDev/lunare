@@ -1,5 +1,4 @@
 import { Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
 import { DownloadStatus } from '@prisma/client';
@@ -8,6 +7,7 @@ import { mkdir, rm } from 'node:fs/promises';
 import { MetadataService } from '../../metadata/metadata.service';
 import { LibraryService } from '../../library/library.service';
 import { WebSocketService } from '../../websocket/websocket.service';
+import { SettingsService } from '../../settings/settings.service';
 import { QueueRepository } from '../queue.repository';
 import { YtDlpService } from '../lib/ytdlp.service';
 import { moveFile, sanitizeFilenameSegment } from '../lib/filesystem.util';
@@ -27,7 +27,7 @@ export class DownloadProcessor extends WorkerHost {
     private readonly metadataService: MetadataService,
     private readonly libraryService: LibraryService,
     private readonly websocketService: WebSocketService,
-    private readonly config: ConfigService,
+    private readonly settingsService: SettingsService,
   ) {
     super();
   }
@@ -38,7 +38,7 @@ export class DownloadProcessor extends WorkerHost {
       throw new Error(`DownloadJob ${job.data.downloadJobId} not found`);
     }
 
-    const tempDir = join(this.config.getOrThrow<string>('DOWNLOAD_TMP_PATH'), downloadJob.id);
+    const tempDir = join(await this.settingsService.getDownloadTmpPath(), downloadJob.id);
 
     try {
       await mkdir(tempDir, { recursive: true });
@@ -66,7 +66,7 @@ export class DownloadProcessor extends WorkerHost {
 
       await this.updateStatus(downloadJob.userId, downloadJob.id, DownloadStatus.ORGANIZING, 100);
 
-      const libraryPath = this.config.getOrThrow<string>('LIBRARY_PATH');
+      const libraryPath = await this.settingsService.getLibraryPath();
       const safeArtist = sanitizeFilenameSegment(artist, UNKNOWN_ARTIST);
       const safeAlbum = sanitizeFilenameSegment(album, UNKNOWN_ALBUM);
       const safeTitle = sanitizeFilenameSegment(title, 'Unknown Title');
