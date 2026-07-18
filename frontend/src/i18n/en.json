@@ -19,5 +19,18 @@
     "login": "Log in",
     "loggingIn": "Logging in...",
     "loginError": "Invalid email or password"
+  },
+  "dashboard": {
+    "tracks": "Tracks",
+    "artists": "Artists",
+    "albums": "Albums",
+    "diskUsage": "Disk usage",
+    "activeDownloads": "Active downloads",
+    "completedDownloads": "Completed downloads",
+    "queueWaiting": "Waiting in queue",
+    "cpuLoad": "CPU load (1 min)",
+    "memory": "Memory",
+    "loading": "Loading...",
+    "error": "Could not load dashboard"
   }
 }

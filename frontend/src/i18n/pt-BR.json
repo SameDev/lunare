@@ -19,5 +19,18 @@
     "login": "Entrar",
     "loggingIn": "Entrando...",
     "loginError": "E-mail ou senha inválidos"
+  },
+  "dashboard": {
+    "tracks": "Músicas",
+    "artists": "Artistas",
+    "albums": "Álbuns",
+    "diskUsage": "Espaço utilizado",
+    "activeDownloads": "Downloads ativos",
+    "completedDownloads": "Downloads concluídos",
+    "queueWaiting": "Na fila",
+    "cpuLoad": "Uso de CPU (1 min)",
+    "memory": "Memória",
+    "loading": "Carregando...",
+    "error": "Não foi possível carregar o painel"
   }
 }
