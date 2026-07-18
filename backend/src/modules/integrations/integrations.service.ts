@@ -1,9 +1,10 @@
-import { ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Webhook } from '@prisma/client';
 import { IntegrationsRepository } from './integrations.repository';
 import { CreateWebhookDto } from './dto/create-webhook.dto';
 import { UpdateWebhookDto } from './dto/update-webhook.dto';
 import { WebhookEvent } from './webhook-events';
+import { assertNotPrivateTarget } from './lib/ssrf-guard';
 
 const WEBHOOK_TIMEOUT_MS = 5000;
 
@@ -13,7 +14,8 @@ export class IntegrationsService {
 
   constructor(private readonly integrationsRepository: IntegrationsRepository) {}
 
-  create(userId: string, dto: CreateWebhookDto): Promise<Webhook> {
+  async create(userId: string, dto: CreateWebhookDto): Promise<Webhook> {
+    await this.validateTarget(dto.url);
     return this.integrationsRepository.create(userId, dto.url, dto.events);
   }
 
@@ -34,6 +36,9 @@ export class IntegrationsService {
 
   async update(userId: string, id: string, dto: UpdateWebhookDto): Promise<Webhook> {
     await this.findOne(userId, id);
+    if (dto.url) {
+      await this.validateTarget(dto.url);
+    }
     return this.integrationsRepository.update(id, dto);
   }
 
@@ -47,6 +52,16 @@ export class IntegrationsService {
 
     await Promise.all(
       webhooks.map(async (webhook) => {
+        // Re-checked at delivery time, not just at creation — DNS can change between the two
+        // (rebinding), and this is the point where a request actually leaves the server.
+        try {
+          await assertNotPrivateTarget(webhook.url);
+        } catch (error) {
+          const message = error instanceof Error ? error.message : 'Unknown error';
+          this.logger.warn(`Webhook ${webhook.id} blocked at delivery time: ${message}`);
+          return;
+        }
+
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), WEBHOOK_TIMEOUT_MS);
         try {
@@ -64,5 +79,14 @@ export class IntegrationsService {
         }
       }),
     );
+  }
+
+  private async validateTarget(url: string): Promise<void> {
+    try {
+      await assertNotPrivateTarget(url);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Invalid webhook URL';
+      throw new BadRequestException(message);
+    }
   }
 }
