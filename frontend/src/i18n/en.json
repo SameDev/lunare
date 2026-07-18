@@ -41,5 +41,27 @@
     "empty": "No tracks found",
     "previous": "Previous",
     "next": "Next"
+  },
+  "downloads": {
+    "urls": "URLs (one per line)",
+    "urlsPlaceholder": "https://example.com/audio.mp3",
+    "format": "Format",
+    "quality": "Quality",
+    "qualityBest": "Best",
+    "destinationFolder": "Destination folder (optional)",
+    "customTitle": "Custom title (optional)",
+    "submit": "Add download",
+    "submitting": "Adding...",
+    "source": "Source",
+    "status": "Status",
+    "progress": "Progress",
+    "cancel": "Cancel",
+    "empty": "No downloads yet",
+    "statusPENDING": "Pending",
+    "statusDOWNLOADING": "Downloading",
+    "statusCONVERTING": "Converting",
+    "statusORGANIZING": "Organizing",
+    "statusCOMPLETED": "Completed",
+    "statusFAILED": "Failed"
   }
 }

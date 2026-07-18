@@ -41,5 +41,27 @@
     "empty": "Nenhuma música encontrada",
     "previous": "Anterior",
     "next": "Próxima"
+  },
+  "downloads": {
+    "urls": "URLs (uma por linha)",
+    "urlsPlaceholder": "https://exemplo.com/audio.mp3",
+    "format": "Formato",
+    "quality": "Qualidade",
+    "qualityBest": "Melhor",
+    "destinationFolder": "Pasta de destino (opcional)",
+    "customTitle": "Nome personalizado (opcional)",
+    "submit": "Adicionar download",
+    "submitting": "Adicionando...",
+    "source": "Origem",
+    "status": "Status",
+    "progress": "Progresso",
+    "cancel": "Cancelar",
+    "empty": "Nenhum download ainda",
+    "statusPENDING": "Aguardando",
+    "statusDOWNLOADING": "Baixando",
+    "statusCONVERTING": "Convertendo",
+    "statusORGANIZING": "Organizando",
+    "statusCOMPLETED": "Concluído",
+    "statusFAILED": "Erro"
   }
 }
