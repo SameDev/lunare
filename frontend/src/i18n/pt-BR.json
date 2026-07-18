@@ -32,5 +32,14 @@
     "memory": "Memória",
     "loading": "Carregando...",
     "error": "Não foi possível carregar o painel"
+  },
+  "library": {
+    "title": "Título",
+    "artist": "Artista",
+    "album": "Álbum",
+    "duration": "Duração",
+    "empty": "Nenhuma música encontrada",
+    "previous": "Anterior",
+    "next": "Próxima"
   }
 }

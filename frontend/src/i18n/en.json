@@ -32,5 +32,14 @@
     "memory": "Memory",
     "loading": "Loading...",
     "error": "Could not load dashboard"
+  },
+  "library": {
+    "title": "Title",
+    "artist": "Artist",
+    "album": "Album",
+    "duration": "Duration",
+    "empty": "No tracks found",
+    "previous": "Previous",
+    "next": "Next"
   }
 }
