@@ -1,10 +1,9 @@
 import { io, type Socket } from 'socket.io-client';
 import { authStorage } from './authStorage';
-
-const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
+import { getApiUrl } from './apiUrl';
 
 export function createSocket(): Socket {
-  return io(API_URL, {
+  return io(getApiUrl(), {
     auth: { token: authStorage.getAccessToken() },
     autoConnect: true,
   });
