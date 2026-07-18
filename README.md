@@ -45,6 +45,14 @@ npm run dev
 
 Runs backend (NestJS, port 3000) and frontend (Vite, port 5173) concurrently. Requires local PostgreSQL and Redis instances (see `.env.example`).
 
+## Testing
+
+```bash
+cd backend
+npm test          # unit tests — no external services required
+npm run test:e2e  # e2e tests — requires a live Postgres + Redis + a seeded admin user (same as running the app)
+```
+
 ## Project structure
 
 ```
