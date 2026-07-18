@@ -103,4 +103,53 @@ export class LibraryRepository {
       take: limit,
     });
   }
+
+  async upsertTrackFromFile(data: {
+    artistName: string;
+    albumTitle: string;
+    albumYear?: number;
+    coverPath?: string;
+    title: string;
+    trackNumber?: number;
+    durationSeconds?: number;
+    genre?: string;
+    filePath: string;
+  }): Promise<TrackWithRelations> {
+    const artist = await this.prisma.artist.upsert({
+      where: { name: data.artistName },
+      create: { name: data.artistName },
+      update: {},
+    });
+
+    const album = await this.prisma.album.upsert({
+      where: { artistId_title: { artistId: artist.id, title: data.albumTitle } },
+      create: {
+        title: data.albumTitle,
+        year: data.albumYear,
+        coverPath: data.coverPath,
+        artistId: artist.id,
+      },
+      update: data.coverPath ? { coverPath: data.coverPath } : {},
+    });
+
+    return this.prisma.track.upsert({
+      where: { filePath: data.filePath },
+      create: {
+        title: data.title,
+        trackNumber: data.trackNumber,
+        durationSeconds: data.durationSeconds,
+        genre: data.genre,
+        filePath: data.filePath,
+        albumId: album.id,
+      },
+      update: {
+        title: data.title,
+        trackNumber: data.trackNumber,
+        durationSeconds: data.durationSeconds,
+        genre: data.genre,
+        albumId: album.id,
+      },
+      include: trackWithRelations.include,
+    });
+  }
 }

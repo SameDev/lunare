@@ -13,7 +13,8 @@ RUN npm run build
 FROM node:20-alpine AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
-RUN apk add --no-cache ffmpeg
+RUN apk add --no-cache ffmpeg python3 py3-pip
+RUN pip install --no-cache-dir --break-system-packages yt-dlp
 RUN addgroup -S musichub && adduser -S musichub -G musichub
 COPY package*.json ./
 RUN npm ci --omit=dev

@@ -46,6 +46,20 @@ export class LibraryService {
     return this.libraryRepository.findHistory(userId, limit);
   }
 
+  upsertTrackFromFile(data: {
+    artistName: string;
+    albumTitle: string;
+    albumYear?: number;
+    coverPath?: string;
+    title: string;
+    trackNumber?: number;
+    durationSeconds?: number;
+    genre?: string;
+    filePath: string;
+  }): Promise<TrackWithRelations> {
+    return this.libraryRepository.upsertTrackFromFile(data);
+  }
+
   private async assertTrackExists(trackId: string): Promise<void> {
     const track = await this.libraryRepository.findTrackById(trackId);
     if (!track) {

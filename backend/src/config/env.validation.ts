@@ -41,6 +41,9 @@ class EnvironmentVariables {
 
   @IsString()
   LIBRARY_PATH!: string;
+
+  @IsString()
+  DOWNLOAD_TMP_PATH!: string;
 }
 
 export function validateEnv(config: Record<string, unknown>): EnvironmentVariables {

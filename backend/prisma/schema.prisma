@@ -21,8 +21,9 @@ model User {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
 
-  favorites Favorite[]
-  history   PlayHistory[]
+  favorites     Favorite[]
+  history       PlayHistory[]
+  downloadJobs  DownloadJob[]
 
   @@map("users")
 }
@@ -63,9 +64,10 @@ model Track {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  album     Album         @relation(fields: [albumId], references: [id], onDelete: Cascade)
-  favorites Favorite[]
-  history   PlayHistory[]
+  album       Album         @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  favorites   Favorite[]
+  history     PlayHistory[]
+  downloadJob DownloadJob?
 
   @@map("tracks")
 }
@@ -94,4 +96,40 @@ model PlayHistory {
 
   @@index([userId, playedAt])
   @@map("play_history")
+}
+
+enum DownloadStatus {
+  PENDING
+  DOWNLOADING
+  CONVERTING
+  ORGANIZING
+  COMPLETED
+  FAILED
+}
+
+model DownloadJob {
+  id                String         @id @default(uuid())
+  userId            String
+  batchId           String?
+  sourceUrl         String
+  sourceTitle       String?
+  sourceArtist      String?
+  playlistIndex     Int?
+  status            DownloadStatus @default(PENDING)
+  progress          Float          @default(0)
+  format            String
+  quality           String
+  destinationFolder String?
+  customTitle       String?
+  errorMessage      String?
+  resultTrackId     String?        @unique
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resultTrack Track? @relation(fields: [resultTrackId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([batchId])
+  @@map("download_jobs")
 }
