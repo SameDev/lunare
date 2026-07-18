@@ -29,21 +29,40 @@ interface Playlist {
   name: string;
 }
 
+interface Artist {
+  id: string;
+  name: string;
+}
+
 const PAGE_SIZE = 20;
 
 export function LibraryPage() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [search, setSearch] = useState('');
+  const [genre, setGenre] = useState('');
+  const [artistId, setArtistId] = useState('');
   const [page, setPage] = useState(1);
   const debouncedSearch = useDebounce(search);
 
   const tracksQuery = useQuery({
-    queryKey: ['library-tracks', debouncedSearch, page],
-    queryFn: () =>
-      apiFetch<TracksResponse>(
-        `/library/tracks?search=${encodeURIComponent(debouncedSearch)}&page=${page}&limit=${PAGE_SIZE}`,
-      ),
+    queryKey: ['library-tracks', debouncedSearch, genre, artistId, page],
+    queryFn: () => {
+      const params = new URLSearchParams({ search: debouncedSearch, page: String(page), limit: String(PAGE_SIZE) });
+      if (genre) params.set('genre', genre);
+      if (artistId) params.set('artistId', artistId);
+      return apiFetch<TracksResponse>(`/library/tracks?${params.toString()}`);
+    },
+  });
+
+  const genresQuery = useQuery({
+    queryKey: ['library-genres'],
+    queryFn: () => apiFetch<string[]>('/library/genres'),
+  });
+
+  const artistsQuery = useQuery({
+    queryKey: ['library-artists'],
+    queryFn: () => apiFetch<Artist[]>('/library/artists'),
   });
 
   const favoritesQuery = useQuery({
@@ -95,6 +114,40 @@ export function LibraryPage() {
           placeholder={t('search.placeholder')}
           className="w-full bg-transparent outline-none placeholder:text-slate-500"
         />
+      </div>
+
+      <div className="mb-4 flex gap-3">
+        <select
+          value={artistId}
+          onChange={(e) => {
+            setArtistId(e.target.value);
+            setPage(1);
+          }}
+          className="rounded-md border border-surface-border bg-surface-raised px-3 py-1.5 text-sm text-slate-300"
+        >
+          <option value="">{t('library.allArtists')}</option>
+          {artistsQuery.data?.map((artist) => (
+            <option key={artist.id} value={artist.id}>
+              {artist.name}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={genre}
+          onChange={(e) => {
+            setGenre(e.target.value);
+            setPage(1);
+          }}
+          className="rounded-md border border-surface-border bg-surface-raised px-3 py-1.5 text-sm text-slate-300"
+        >
+          <option value="">{t('library.allGenres')}</option>
+          {genresQuery.data?.map((g) => (
+            <option key={g} value={g}>
+              {g}
+            </option>
+          ))}
+        </select>
       </div>
 
       {tracksQuery.isLoading && <p className="text-sm text-slate-400">{t('dashboard.loading')}</p>}

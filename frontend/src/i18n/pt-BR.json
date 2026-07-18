@@ -44,7 +44,9 @@
     "empty": "Nenhuma música encontrada",
     "previous": "Anterior",
     "next": "Próxima",
-    "addToPlaylist": "Adicionar à playlist"
+    "addToPlaylist": "Adicionar à playlist",
+    "allArtists": "Todos os artistas",
+    "allGenres": "Todos os gêneros"
   },
   "playlists": {
     "newPlaceholder": "Nome da nova playlist",
