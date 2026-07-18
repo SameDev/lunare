@@ -43,4 +43,21 @@ export class DownloadsRepository {
       data: { status: DownloadStatus.FAILED, errorMessage: 'Cancelled by user' },
     });
   }
+
+  async getCounts(userId: string): Promise<{ active: number; completed: number; failed: number }> {
+    const activeStatuses: DownloadStatus[] = [
+      DownloadStatus.PENDING,
+      DownloadStatus.DOWNLOADING,
+      DownloadStatus.CONVERTING,
+      DownloadStatus.ORGANIZING,
+    ];
+
+    const [active, completed, failed] = await this.prisma.$transaction([
+      this.prisma.downloadJob.count({ where: { userId, status: { in: activeStatuses } } }),
+      this.prisma.downloadJob.count({ where: { userId, status: DownloadStatus.COMPLETED } }),
+      this.prisma.downloadJob.count({ where: { userId, status: DownloadStatus.FAILED } }),
+    ]);
+
+    return { active, completed, failed };
+  }
 }

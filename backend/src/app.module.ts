@@ -14,6 +14,7 @@ import { PlaylistsModule } from './modules/playlists/playlists.module';
 import { SettingsModule } from './modules/settings/settings.module';
 import { IntegrationsModule } from './modules/integrations/integrations.module';
 import { WebSocketModule } from './modules/websocket/websocket.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { WebSocketModule } from './modules/websocket/websocket.module';
     SettingsModule,
     IntegrationsModule,
     WebSocketModule,
+    DashboardModule,
   ],
   providers: [
     {

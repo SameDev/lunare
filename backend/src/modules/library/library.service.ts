@@ -46,6 +46,10 @@ export class LibraryService {
     return this.libraryRepository.findHistory(userId, limit);
   }
 
+  getCounts(): Promise<{ trackCount: number; artistCount: number; albumCount: number }> {
+    return this.libraryRepository.getCounts();
+  }
+
   upsertTrackFromFile(data: {
     artistName: string;
     albumTitle: string;

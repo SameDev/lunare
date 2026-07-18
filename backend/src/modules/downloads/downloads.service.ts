@@ -86,4 +86,8 @@ export class DownloadsService {
 
     return this.downloadsRepository.cancel(id);
   }
+
+  getCounts(userId: string) {
+    return this.downloadsRepository.getCounts(userId);
+  }
 }

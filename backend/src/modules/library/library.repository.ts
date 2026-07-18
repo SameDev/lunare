@@ -104,6 +104,15 @@ export class LibraryRepository {
     });
   }
 
+  async getCounts(): Promise<{ trackCount: number; artistCount: number; albumCount: number }> {
+    const [trackCount, artistCount, albumCount] = await this.prisma.$transaction([
+      this.prisma.track.count(),
+      this.prisma.artist.count(),
+      this.prisma.album.count(),
+    ]);
+    return { trackCount, artistCount, albumCount };
+  }
+
   async upsertTrackFromFile(data: {
     artistName: string;
     albumTitle: string;
