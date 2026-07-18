@@ -110,7 +110,7 @@ export function SettingsPage() {
           className="mb-3 w-full rounded-md border border-surface-border bg-surface px-3 py-2 text-sm text-slate-100 outline-none focus:border-accent"
         />
 
-        <div className="mb-3 grid grid-cols-2 gap-3">
+        <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div>
             <label className="mb-1 block text-sm text-slate-400" htmlFor="defaultQuality">
               {t('settings.defaultQuality')}
@@ -138,7 +138,7 @@ export function SettingsPage() {
           </div>
         </div>
 
-        <div className="mb-4 grid grid-cols-2 gap-3">
+        <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div>
             <label className="mb-1 block text-sm text-slate-400" htmlFor="language">
               {t('settings.language')}

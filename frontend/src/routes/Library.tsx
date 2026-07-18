@@ -168,8 +168,8 @@ export function LibraryPage() {
 
       {tracksQuery.data && (
         <>
-          <div className="overflow-hidden rounded-lg border border-surface-border">
-            <table className="w-full text-left text-sm">
+          <div className="overflow-x-auto rounded-lg border border-surface-border">
+            <table className="w-full min-w-[640px] text-left text-sm">
               <thead className="border-b border-surface-border text-slate-400">
                 <tr>
                   <th className="w-10"></th>

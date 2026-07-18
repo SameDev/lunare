@@ -131,7 +131,7 @@ export function DownloadsPage() {
           className="mb-3 w-full rounded-md border border-surface-border bg-surface px-3 py-2 text-sm text-slate-100 outline-none focus:border-accent"
         />
 
-        <div className="mb-3 grid grid-cols-2 gap-3">
+        <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div>
             <label className="mb-1 block text-sm text-slate-400" htmlFor="format">
               {t('downloads.format')}
@@ -168,7 +168,7 @@ export function DownloadsPage() {
           </div>
         </div>
 
-        <div className="mb-3 grid grid-cols-2 gap-3">
+        <div className="mb-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div>
             <label className="mb-1 block text-sm text-slate-400" htmlFor="destinationFolder">
               {t('downloads.destinationFolder')}
@@ -205,8 +205,8 @@ export function DownloadsPage() {
       </form>
 
       {downloadsQuery.data && (
-        <div className="overflow-hidden rounded-lg border border-surface-border">
-          <table className="w-full text-left text-sm">
+        <div className="overflow-x-auto rounded-lg border border-surface-border">
+          <table className="w-full min-w-[520px] text-left text-sm">
             <thead className="border-b border-surface-border text-slate-400">
               <tr>
                 <th className="px-4 py-2 font-normal">{t('downloads.source')}</th>

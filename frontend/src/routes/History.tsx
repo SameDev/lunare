@@ -31,8 +31,8 @@ export function HistoryPage() {
       )}
 
       {historyQuery.data && historyQuery.data.length > 0 && (
-        <div className="overflow-hidden rounded-lg border border-surface-border">
-          <table className="w-full text-left text-sm">
+        <div className="overflow-x-auto rounded-lg border border-surface-border">
+          <table className="w-full min-w-[560px] text-left text-sm">
             <thead className="border-b border-surface-border text-slate-400">
               <tr>
                 <th className="px-4 py-2 font-normal">{t('library.title')}</th>
