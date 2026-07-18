@@ -36,6 +36,7 @@ services:
     env_file: .env
     volumes:
       - library_data:/data/library
+      - backend_tmp:/data/tmp
       - backend_logs:/app/logs
 
   frontend:
@@ -59,4 +60,5 @@ volumes:
   pg_data:
   redis_data:
   library_data:
+  backend_tmp:
   backend_logs:
