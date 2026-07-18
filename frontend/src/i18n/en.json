@@ -2,7 +2,10 @@
   "nav": {
     "dashboard": "Dashboard",
     "library": "Library",
+    "playlists": "Playlists",
+    "history": "History",
     "downloads": "Downloads",
+    "integrations": "Integrations",
     "settings": "Settings"
   },
   "search": {
@@ -40,7 +43,16 @@
     "duration": "Duration",
     "empty": "No tracks found",
     "previous": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "addToPlaylist": "Add to playlist"
+  },
+  "playlists": {
+    "newPlaceholder": "New playlist name",
+    "create": "Create",
+    "empty": "No playlists yet",
+    "noTracks": "No tracks in this playlist",
+    "delete": "Delete playlist",
+    "confirmDelete": "Delete this playlist?"
   },
   "downloads": {
     "urls": "URLs (one per line)",

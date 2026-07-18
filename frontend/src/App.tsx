@@ -7,6 +7,8 @@ import { AppLayout } from './components/layout/AppLayout';
 import { LoginPage } from './routes/Login';
 import { DashboardPage } from './routes/Dashboard';
 import { LibraryPage } from './routes/Library';
+import { PlaylistsPage } from './routes/Playlists';
+import { PlaylistDetailPage } from './routes/PlaylistDetail';
 import { DownloadsPage } from './routes/Downloads';
 import { SettingsPage } from './routes/Settings';
 
@@ -21,6 +23,8 @@ export function App() {
               <Route element={<AppLayout />}>
                 <Route index element={<DashboardPage />} />
                 <Route path="library" element={<LibraryPage />} />
+                <Route path="playlists" element={<PlaylistsPage />} />
+                <Route path="playlists/:id" element={<PlaylistDetailPage />} />
                 <Route path="downloads" element={<DownloadsPage />} />
                 <Route path="settings" element={<SettingsPage />} />
               </Route>

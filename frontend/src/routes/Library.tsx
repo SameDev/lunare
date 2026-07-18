@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { Heart, Search } from 'lucide-react';
+import { Heart, ListPlus, Search } from 'lucide-react';
 import { apiFetch } from '../lib/api';
 import { useDebounce } from '../lib/useDebounce';
 import { formatDuration } from '../lib/formatDuration';
@@ -22,6 +22,11 @@ interface TracksResponse {
 
 interface Favorite {
   trackId: string;
+}
+
+interface Playlist {
+  id: string;
+  name: string;
 }
 
 const PAGE_SIZE = 20;
@@ -56,6 +61,19 @@ export function LibraryPage() {
       apiFetch<void>(`/library/tracks/${trackId}/favorite`, { method: isFavorite ? 'DELETE' : 'POST' }),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['library-favorites'] });
+    },
+  });
+
+  const playlistsQuery = useQuery({
+    queryKey: ['playlists'],
+    queryFn: () => apiFetch<Playlist[]>('/playlists'),
+  });
+
+  const addToPlaylist = useMutation({
+    mutationFn: ({ playlistId, trackId }: { playlistId: string; trackId: string }) =>
+      apiFetch<void>(`/playlists/${playlistId}/tracks`, { method: 'POST', body: JSON.stringify({ trackId }) }),
+    onSuccess: (_data, variables) => {
+      void queryClient.invalidateQueries({ queryKey: ['playlist', variables.playlistId] });
     },
   });
 
@@ -105,13 +123,39 @@ export function LibraryPage() {
                       <td className="px-4 py-2 text-slate-400">{track.album.title}</td>
                       <td className="px-4 py-2 text-slate-400">{formatDuration(track.durationSeconds)}</td>
                       <td className="px-4 py-2">
-                        <button
-                          type="button"
-                          onClick={() => toggleFavorite.mutate({ trackId: track.id, isFavorite })}
-                          className="text-slate-400 transition-colors hover:text-accent-hover"
-                        >
-                          <Heart size={16} fill={isFavorite ? 'currentColor' : 'none'} />
-                        </button>
+                        <div className="flex items-center gap-3">
+                          <button
+                            type="button"
+                            onClick={() => toggleFavorite.mutate({ trackId: track.id, isFavorite })}
+                            className="text-slate-400 transition-colors hover:text-accent-hover"
+                          >
+                            <Heart size={16} fill={isFavorite ? 'currentColor' : 'none'} />
+                          </button>
+                          {playlistsQuery.data && playlistsQuery.data.length > 0 && (
+                            <div className="relative text-slate-400 hover:text-accent-hover">
+                              <ListPlus size={16} />
+                              <select
+                                value=""
+                                onChange={(e) => {
+                                  if (e.target.value) {
+                                    addToPlaylist.mutate({ playlistId: e.target.value, trackId: track.id });
+                                  }
+                                }}
+                                title={t('library.addToPlaylist')}
+                                className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                              >
+                                <option value="" disabled>
+                                  {t('library.addToPlaylist')}
+                                </option>
+                                {playlistsQuery.data.map((playlist) => (
+                                  <option key={playlist.id} value={playlist.id}>
+                                    {playlist.name}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   );

@@ -1,11 +1,14 @@
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { LayoutDashboard, Library, Download, Settings } from 'lucide-react';
+import { LayoutDashboard, Library, Download, Settings, ListMusic, History, Webhook } from 'lucide-react';
 
 const NAV_ITEMS = [
   { to: '/', labelKey: 'nav.dashboard', icon: LayoutDashboard },
   { to: '/library', labelKey: 'nav.library', icon: Library },
+  { to: '/playlists', labelKey: 'nav.playlists', icon: ListMusic },
+  { to: '/history', labelKey: 'nav.history', icon: History },
   { to: '/downloads', labelKey: 'nav.downloads', icon: Download },
+  { to: '/integrations', labelKey: 'nav.integrations', icon: Webhook },
   { to: '/settings', labelKey: 'nav.settings', icon: Settings },
 ] as const;
 

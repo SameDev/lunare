@@ -2,7 +2,10 @@
   "nav": {
     "dashboard": "Painel",
     "library": "Biblioteca",
+    "playlists": "Playlists",
+    "history": "Histórico",
     "downloads": "Downloads",
+    "integrations": "Integrações",
     "settings": "Configurações"
   },
   "search": {
@@ -40,7 +43,16 @@
     "duration": "Duração",
     "empty": "Nenhuma música encontrada",
     "previous": "Anterior",
-    "next": "Próxima"
+    "next": "Próxima",
+    "addToPlaylist": "Adicionar à playlist"
+  },
+  "playlists": {
+    "newPlaceholder": "Nome da nova playlist",
+    "create": "Criar",
+    "empty": "Nenhuma playlist ainda",
+    "noTracks": "Nenhuma música nesta playlist",
+    "delete": "Excluir playlist",
+    "confirmDelete": "Excluir esta playlist?"
   },
   "downloads": {
     "urls": "URLs (uma por linha)",
