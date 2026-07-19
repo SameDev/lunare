@@ -1,16 +1,16 @@
-FROM node:20-alpine AS deps
+FROM node:20-alpine3.19 AS deps
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
-FROM node:20-alpine AS build
+FROM node:20-alpine3.19 AS build
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma generate
 RUN npm run build
 
-FROM node:20-alpine AS runtime
+FROM node:20-alpine3.19 AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
 ENV CHECKPOINT_DISABLE=1
