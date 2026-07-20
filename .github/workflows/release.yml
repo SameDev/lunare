@@ -75,7 +75,7 @@ jobs:
             docker compose -f docker-compose.release.yml up -d
             ```
 
-            App available at `http://localhost` (or your Tailscale/LAN address — see
+            App available at `http://localhost:8095` (or your Tailscale/LAN address — see
             the README's CORS_ORIGIN note). Runs on default credentials out of the box,
             fine for a trusted home network (e.g. ZimaOS/NAS one-click deploys).
 
