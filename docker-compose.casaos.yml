@@ -92,3 +92,25 @@ services:
     depends_on:
       - frontend
       - backend
+
+x-casaos:
+  id: com.github.samedev.musichub
+  architectures:
+    - amd64
+    - arm64
+  main: nginx
+  author: SameDev
+  category: Media
+  developer: SameDev
+  icon: https://raw.githubusercontent.com/SameDev/music-hub/main/frontend/public/pwa-512x512.png
+  title:
+    en_US: MusicHub
+    pt_BR: MusicHub
+  tagline:
+    en_US: Self-hosted music library server for homelabs
+    pt_BR: Servidor de biblioteca de música self-hosted para homelabs
+  description:
+    en_US: Organize, stream, tag, and manage your personal music collection through a modern web interface.
+    pt_BR: Organize, transmita, edite tags e gerencie sua coleção pessoal de música por uma interface web moderna.
+  index: /
+  port_map: "8095"
